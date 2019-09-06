@@ -1,0 +1,6 @@
+{
+  "name": "tallerCells",
+  "short_name": "tallerCells",
+  "start_url": "/",
+  "display": "standalone"
+}

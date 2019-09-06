@@ -1,0 +1,111 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="llamado-gt">
+    <template>
+        <style>
+            :host {
+                display: block
+            }
+        </style>
+
+        <iron-ajax
+            id="llamadoapi"
+            method="post"
+            url=" https://artichoke.platform.bbva.com/TechArchitecture/co/grantingTicket/V02"
+            body='[[dataEnvio]]'
+            handle-as="json"
+            content-type="application/json"
+            on-response="_handleResponse"
+            on-error="_handleError"
+            ></iron-ajax>
+        
+
+        
+
+    </template>
+
+    <script>
+
+        class LlamadoGt extends Polymer.Element {
+            /**
+             * String providing the tag name to register the element under.
+             */
+            static get is() {
+                return 'llamado-gt';
+            }
+
+            /**
+             * Object describing property-related metadata used by Polymer features
+             */
+            static get properties() {
+                return {
+
+                    dataEnvio:{
+                        type: Array,
+                        notify: true,
+                        value: ''
+                    },
+
+                    datos:{
+                        type: Object,
+                        notify: true
+                    },
+
+                    tsec :{
+                        type: Object
+                    }
+                    
+                };
+            }
+
+            setDatos(){
+                console.log("construye body");
+
+                var cuerpoMensaje = {
+                    authentication: {
+                        userID: this.datos.nombre,
+                        consumerID: "10000033",
+                        authenticationType: "02",
+                        authenticationData: [{
+                            idAuthenticationData: "password",
+                            authenticationData: [this.datos.clave]
+                            }]
+                            },
+                            backendUserRequest: {
+                                userId: "",
+                                accessCode: this.datos.nombre,
+                                dialogId: ""
+                                }
+                                }
+
+                    this.set('dataEnvio',cuerpoMensaje);
+
+
+            }
+
+            _handleResponse(e, req){
+                console.log("evento",e);
+                this.dispatchEvent(new CustomEvent('respueastaapi', {detail: e.detail.__data.xhr.getResponseHeader('tsec')}
+                ));
+
+                /**console.log("h2", e.detail.__data.xhr.getResponseHeader('tsec'));
+                var header = req.xhr.getResponseHeader('tsec');
+
+                console.log("header: ", header);
+                console.log("h2", e.detail.__data.xhr.getResponseHeader('tsec'));*/
+            }
+
+            _handleError(e){
+                console.log('Evento Error: ', e.detail.error);
+            }
+
+            ejecutrajax(){
+                this.$.llamadoapi.generateRequest();
+                console.log("Entra a ejecutar: ");
+            }
+
+        }
+
+        window.customElements.define(LlamadoGt.is, LlamadoGt);
+    </script>
+</dom-module>

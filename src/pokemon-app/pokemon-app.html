@@ -1,0 +1,96 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/game-card/game-card.html">
+<link rel="import" href="../pokemon-app/pokemon.html">
+<link rel="import" href="../pokemon-app/llamado-api.html">
+<link rel="import" href="../../bower_components/polymer/lib/">
+
+<dom-module id="pokemon-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+    <button type="button" name="button" on-click="obtenerPokemonNombre">prueba</button>
+    <!--game-card symbol="♠" flippable>
+      <span>prueba</span>
+
+    </game-card>
+    <game-card symbol="♥" rank="3" aria-label="prueba" flippable></game-card>
+    <game-card symbol="♦" rank="k" flippable unrevealed></game-card-->
+
+      <div>
+
+
+      <label for="nombre">Nombre</label>
+      <input type="text"></input>
+
+      <iron-input>prueba</iron-input>
+      paper-input-conta
+
+    </div>
+
+
+      <llamado-api pokemonobject={{pokemonarray}}></llamado-api>
+      <template is="dom-repeat" items="{{pokemonarray.results}}" index-as="index">
+
+    
+      <li>[[item.name]]</li>
+      <li>ppppp</li>
+
+    </template>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class PokemonApp extends Polymer.Element {
+      static get is() { return 'pokemon-app'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'pokemon-app'
+          },
+          pokemon: {
+            type: Object,
+            notify: true
+          },
+          pokemonarray: {
+            type: Array,
+            notify: true
+          }
+        };
+      }
+
+      obtenerPokemon(e){
+        var url = "https://pokeapi.co/api/v2/pokemon/";
+        //var url = "https://pokeapi.co/api/v2/pokemon/1/";
+        var request = new XMLHttpRequest();
+        request.open("GET",url, false);
+        request.setRequestHeader("Accept", "application/json");
+        request.send();
+        this.pokemon = JSON.parse(request.responseText);
+        console.log(this.pokemon);
+      }
+
+      obtenerPokemonNombre (e){
+        var nombrePokemon = "bulbasaur"
+        var url = "https://pokeapi.co/api/v2/pokemon/"+nombrePokemon+"/";
+        var request = new XMLHttpRequest();
+        request.open("GET",url, false);
+        request.setRequestHeader("Accept", "application/json");
+        request.send();
+        this.pokemon = JSON.parse(request.responseText);
+        console.log(this.pokemonarray);
+      }
+
+    }
+
+    window.customElements.define(PokemonApp.is, PokemonApp);
+  </script>
+</dom-module>

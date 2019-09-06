@@ -1,0 +1,90 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="/src/tallerCells-app/envio-datos.html">
+
+<dom-module id="user-login">
+    <template>
+        <style>
+            :host {
+                display: block
+            }
+        </style>
+
+        <div class=row>
+
+            <label for="nombre">Usuario</label>
+            <input type="text" id="nombre" value="{{nombre::input}}"/>
+            <label for="clave">Clave</label>
+            <input type="password" id="clave" value="{{clave::input}}"/>
+
+        </div>
+        <div>
+
+            <button style="font-size:30px; text-align:center;" class="btn btn-primary" on-click="datosDeEntrada" type="button" name="button">Enviar</button>
+        </div>
+
+
+                <envio-datos id="enviodatosid" datos={{datosarray}} on-respueastaapi="_respuestaHaciaElPadre"></envio-datos>
+
+                <li>{{datosarray}}</li>
+        
+        
+
+    </template>
+
+    <script>
+        class UserLogin extends Polymer.Element {
+            static get is() {
+                return 'user-login';
+            }
+
+            static get properties() {
+                return {
+
+                    haceLlamado:{
+                        type:Boolean,
+                        value: false
+                    },
+
+                    datosarray: {
+                        type: Array,
+                        notify:true,
+                        value: function(){
+                            return{
+                                nombre:'',
+                                clave:''
+                                }
+                        }
+                    },
+
+                    nombre:{
+                        type: String
+                    },
+
+                    clave: {
+                        type: String
+                    }
+                    
+                };
+            }
+
+            _respuestaHaciaElPadre(e){
+                console.log("Respuesta en el padre: ",e.detail);
+            }
+
+            datosDeEntrada(e){
+
+                this.datosarray.nombre = this.nombre;
+                this.datosarray.clave = this.clave;
+                this.haceLlamado = true;
+                this.$.enviodatosid.setDatos();
+                this.$.enviodatosid.ejecutrajax();
+                console.log("Datos del Array: ", this.datosarray);
+
+            }
+
+
+        }
+
+        window.customElements.define(UserLogin.is, UserLogin);
+    </script>
+</dom-module>
