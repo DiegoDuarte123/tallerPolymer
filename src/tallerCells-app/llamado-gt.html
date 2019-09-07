@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="llamado-gt">
     <template>
@@ -9,7 +10,7 @@
         </style>
 
         <iron-ajax
-            id="llamadoapi"
+            id="llamadoTsec"
             method="post"
             url=" https://artichoke.platform.bbva.com/TechArchitecture/co/grantingTicket/V02"
             body='[[dataEnvio]]'
@@ -100,7 +101,7 @@
             }
 
             ejecutrajax(){
-                this.$.llamadoapi.generateRequest();
+                this.$.llamadoTsec.generateRequest();
                 console.log("Entra a ejecutar: ");
             }
 
