@@ -1,0 +1,81 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="muestra-movimientos">
+    <template>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <style>
+            :host {
+                display: block
+            }
+        </style>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Numero Tarjeta</th>
+                    <th>Nombre Tarjeta</th>
+                    <th>Imagen</th>
+                    <th>Disponible</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template is="dom-repeat" items="{{getresultados}}">
+                <tr>
+                    <td>[[item.number]]</td>
+                    <td>[[item.cardType.name]]</td>
+                    <td>
+                        <img src$="[[item.images.0.url]]">
+                    </td>
+                    <td>[[item.availableBalance.currentBalances.0.amount]]</td>
+                </tr>
+                </template>
+            </tbody>
+        </table>
+        
+
+        
+
+    </template>
+
+    <script>
+        /**
+         * `muestra-movimientos` Description
+         *
+         * @summary ShortDescription.
+         * @customElement
+         * @polymer
+         * @extends {Polymer.Element}
+         */
+        class MuestraMovimientos extends Polymer.Element {
+            /**
+             * String providing the tag name to register the element under.
+             */
+            static get is() {
+                return 'muestra-movimientos';
+            }
+
+            /**
+             * Object describing property-related metadata used by Polymer features
+             */
+            static get properties() {
+                return {
+
+                    getresultados:{
+                        type: Array,
+                        notify: true,
+                        observer: 'setlog'
+                    }
+                    
+                };
+            }
+
+            setlog(){
+                console.log("Movimientos: ", this.getresultados);
+            }
+
+
+        }
+
+        window.customElements.define(MuestraMovimientos.is, MuestraMovimientos);
+    </script>
+</dom-module>

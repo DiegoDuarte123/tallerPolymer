@@ -1,6 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <!--link rel="import" href="../../bower_components/paper-input/paper-input.html"-->
 <link rel="import" href="/src/tallerCells-app/llamado-gt.html">
+<link rel="import" href="/src/tallerCells-app/llamado-cards.html">
+<link rel="import" href="/src/tallerCells-app/muestra-movimientos.html">
 
 <dom-module id="tallercells-app">
   <template>
@@ -11,6 +13,8 @@
     </style>
     <h2>Este es el login</h2>
 
+    <div>
+
     <!--paper-input always-float-label label="Floating label"></paper-input-->
     <label for="user">User</label>
     <input id= "user" type="text" value="{{nombre::input}}"/>
@@ -19,6 +23,15 @@
     <button on-click="datosDeEntrada" type="button" name="button">Enviar</button>
 
     <llamado-gt datos={{datosarray}} id="enviodatosid" on-respueastaapi="_respuestaHaciaElPadre"></llamado-gt>
+    <llamado-cards id="datoscards" on-getdatoscards="_respuestaCardsHaciaPapre"></llamado-cards>
+
+  </div>
+
+  <div>
+    <muestra-movimientos id="muestramovimientos" getresultados={{data}}></muestra-movimientos>
+
+  </div>
+  
  
   </template>
 
@@ -58,6 +71,16 @@
 
           clave: {
             type: String
+          },
+
+          tsec: {
+            type: String,
+            notify: true
+          },
+
+          data:{
+            type: Array,
+            notify: true
           }
 
         };
@@ -74,8 +97,19 @@
       }
 
       _respuestaHaciaElPadre(e){
-                console.log("Respuesta en el padre: ",e.detail);
-            }
+        this.tsec = e.detail;
+
+                console.log("Respuesta en el padre: ", this.tsec);
+                sessionStorage.setItem("Tsec", this.tsec);
+                this.$.datoscards.envioHeader();
+                this.$.datoscards._getDatosCards();
+      }
+
+      _respuestaCardsHaciaPapre(e){
+
+        this.data = e.detail;
+        console.log("Llega a rta Padre Cards:", this.data);
+      }
       
     }
 

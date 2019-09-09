@@ -88,12 +88,6 @@
                 console.log("evento",e);
                 this.dispatchEvent(new CustomEvent('respueastaapi', {detail: e.detail.__data.xhr.getResponseHeader('tsec')}
                 ));
-
-                /**console.log("h2", e.detail.__data.xhr.getResponseHeader('tsec'));
-                var header = req.xhr.getResponseHeader('tsec');
-
-                console.log("header: ", header);
-                console.log("h2", e.detail.__data.xhr.getResponseHeader('tsec'));*/
             }
 
             _handleError(e){

@@ -1,0 +1,99 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="llamado-cards">
+    <template>
+        <style>
+            :host {
+                display: block
+            }
+        </style>
+
+        <iron-ajax
+            id="llamadoCards"
+            url="https://artichoke.platform.bbva.com/cards/v0/cards"
+            headers='[[datosCards]]'
+            handle-as="json"
+            last-response = "{{respuestaCards}}"
+            on-error="_handleError"
+            ></iron-ajax>
+
+        
+
+    </template>
+
+    <script>
+        class LlamadoCards extends Polymer.Element {
+            static get is() {
+                return 'llamado-cards';
+            }
+
+            static get properties() {
+                return {
+
+                    datosCards: {
+                        type: Array,
+                        notify: true
+                    },
+
+                    tsecInput: {
+                        type: Object,
+                        notify: true
+                    
+                    },
+
+                    respuestaCards :{
+                        type: Object,
+                        observer : 'setDatosCards',
+                        notify: true
+                    },
+
+                    respuestaCardsArray:{
+                        type: Array
+                    },
+
+                    tsec:{
+                        type: String
+                    }
+                    
+                };
+            }
+
+
+            envioHeader(){
+                console.log("construye Header");
+                this.tsec = sessionStorage.getItem("Tsec");
+                console.log("Valor para tsec en padre Cards", this.tsec);
+
+                var cuerpoHeader = {
+                    Tsec: [this.tsec]
+                            }
+
+                    this.set('datosCards',cuerpoHeader);
+            }
+
+
+            _getDatosCards(){
+                console.log("Entra al llamado de cards:*****");
+                this.$.llamadoCards.generateRequest();
+            }
+
+
+            /*_handleResponse(e, request){
+                console.log("Datos tomados desde Cards: ", e);
+                
+            }*/
+
+            setDatosCards(e){
+                this.set('respuestaCardsArray',this.respuestaCards.data);
+                this.dispatchEvent(new CustomEvent('getdatoscards', {detail: this.respuestaCardsArray}));
+            }
+
+            _handleError(e){
+                console.log('Evento Error: ', e.detail.error);
+            }
+
+        }
+
+        window.customElements.define(LlamadoCards.is, LlamadoCards);
+    </script>
+</dom-module>
